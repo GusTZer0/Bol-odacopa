@@ -41,6 +41,24 @@
             background-attachment: fixed;
         }
 
+        .painel-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (min-width: 860px) {
+            .painel-principal {
+                flex-direction: row;
+                max-width: 880px;
+                align-items: flex-start;
+            }
+        }
+
         .container {
             width: 100%;
             max-width: 420px;
@@ -54,7 +72,6 @@
                 0 0 0 1px var(--border-glass),
                 0 0 35px rgba(74, 222, 128, 0.08);
             position: relative;
-            z-index: 2;
         }
 
         #fogos-container {
@@ -179,13 +196,18 @@
             50% { opacity: 1; transform: scale(1.3); }
         }
 
-        h1 {
+        h1, h2.titulo-secao {
             text-align: center;
             font-family: 'Outfit', sans-serif;
             font-size: 1.6rem;
             font-weight: 900;
             margin-bottom: 16px;
             color: #fff;
+        }
+
+        h2.titulo-secao {
+            font-size: 1.3rem;
+            margin: 0 0 16px 0;
         }
 
         .placar-grid {
@@ -203,13 +225,25 @@
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             user-select: none;
+        }
+
+        .jogador-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(74, 222, 128, 0.4);
+            transform: translateY(-2px);
         }
 
         .jogador-card.lider-topo { 
             border-color: rgba(251, 191, 36, 0.7); 
             background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+        }
+
+        .jogador-card.lider-topo:hover {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.16) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-color: rgba(251, 191, 36, 0.9);
+            transform: translateY(-2px);
         }
 
         .jogador-topo {
@@ -335,6 +369,112 @@
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
+
+        .partida-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 6px;
+            transition: all 0.25s ease;
+        }
+
+        .partida-box:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(251, 191, 36, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .time-info {
+            font-size: 0.95rem;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .time-info.vencedor {
+            color: var(--ouro);
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+        }
+
+        .placar-central {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .placar-central .gols {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-sub);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .placar-central .gols.destaque-vencedor {
+            color: var(--ouro);
+            background: rgba(251, 191, 36, 0.18);
+            border-color: rgba(251, 191, 36, 0.5);
+        }
+
+        .placar-central .vs {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        .status-jogo {
+            text-align: center;
+            font-size: 0.62rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .mural-resenha {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mural-resenha > strong {
+            color: var(--accent);
+            font-size: 0.64rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+        }
+
+        .comentario-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            line-height: 1.3;
+        }
+
+        .autor-comentario {
+            color: var(--ouro);
+            font-weight: 700;
+            margin-bottom: 2px;
+            display: inline-block;
+        }
+
+        .comentario-item p {
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
     </style>
 </head>
 <body>
@@ -346,27 +486,71 @@
         <div class="intro-texto" id="intro-nome-alvo">LÍDERES DA COPA 👑</div>
     </div>
 
-    <div class="container">
-        <div id="fogos-container"></div>
-        
-        <div class="header-top">
-            <div class="live-badge">
-                <span class="pulse-dot"></span>
-                <span>BOLÃO DA COPA • AO VIVO</span>
+    <div class="painel-principal">
+        <div class="container">
+            <div id="fogos-container"></div>
+            
+            <div class="header-top">
+                <div class="live-badge">
+                    <span class="pulse-dot"></span>
+                    <span>BOLÃO DA COPA • AO VIVO</span>
+                </div>
+            </div>
+
+            <h1>Placar do Pódio</h1>
+
+            <div class="placar-grid" id="grid-jogadores"></div>
+
+            <div class="aposta-box">
+                <strong>⚽ O que está em jogo</strong>
+                O primeiro lugar escolhe o próximo passeio do grupo
+            </div>
+
+            <div class="footer-info">
+                Toque no card para ver o histórico de apostas
             </div>
         </div>
 
-        <h1>Placar do Pódio</h1>
+        <div class="container">
+            <div class="header-top">
+                <div class="live-badge" style="background: rgba(251, 191, 36, 0.12); border-color: rgba(251, 191, 36, 0.35); color: var(--ouro);">
+                    <span class="pulse-dot" style="background: var(--ouro);"></span>
+                    <span>QUARTAS DE FINAL</span>
+                </div>
+            </div>
 
-        <div class="placar-grid" id="grid-jogadores"></div>
+            <h2 class="titulo-secao">Jogo do Dia 🏟️</h2>
 
-        <div class="aposta-box">
-            <strong>⚽ O que está em jogo</strong>
-            O primeiro lugar escolhe o proximo passeio do grupo
-        </div>
+            <div class="partida-box">
+                <div class="time-info vencedor">
+                    <span>Suiça</span>
+                </div>
+                <div class="placar-central">
+                    <span class="gols destaque-vencedor">(5)0</span>
+                    <span class="vs">x</span>
+                    <span class="gols">0(3)</span>
+                </div>
+                <div class="time-info" style="text-align: right;">
+                    <span>Colômbia</span>
+                </div>
+            </div>
+            <div class="status-jogo">⏱️ Fim de Jogo • Finalizado</div>
 
-        <div class="footer-info">
-            Toque no card para ver o histórico de apostas
+            <div class="mural-resenha">
+                <strong>💬 Mural do Estádio</strong>
+                <div class="comentario-item">
+                    <span class="autor-comentario">Gustavo:</span>
+                    <p>É A COLOMBIA CARALHOOOOOO</p>
+                </div>
+                <div class="comentario-item">
+                    <span class="autor-comentario">Gustavo:</span>
+                    <p>Deve ter sido o jogo com mais faltas, um total de 43 faltas</p>
+                </div>
+                <div class="comentario-item">
+                    <span class="autor-comentario">Gustavo:</span>
+                    <p>Não aguentava mais esse jogo</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -405,6 +589,13 @@
             const grupoBox = document.getElementById('intro-grupo-alvo');
             const textoBox = document.getElementById('intro-nome-alvo');
             
+            // O áudio é acionado exatamente no momento em que a introdução é configurada na tela
+            const audio = document.getElementById('som-comemoracao');
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(e => console.log("Bloqueio de autoplay do navegador:", e));
+            }
+            
             grupoBox.innerHTML = "";
             lideres.forEach(lider => {
                 const box = document.createElement('div');
@@ -422,13 +613,6 @@
                 textoBox.innerText = `👑 EMPATE NO TOPO: ${nomes} 👑`;
             } else {
                 textoBox.innerText = `👑 ${lideres[0].nome} É O LÍDER! 👑`;
-            }
-            
-            // 🔊 DISPARAR O ÁUDIO NA COMEMORAÇÃO
-            const audio = document.getElementById('som-comemoracao');
-            if (audio) {
-                audio.currentTime = 0;
-                audio.play().catch(e => console.log("Bloqueio de autoplay do navegador:", e));
             }
 
             setTimeout(dispararFogos, 600);
