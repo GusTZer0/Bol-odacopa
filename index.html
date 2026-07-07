@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bolão da Copa ⚽ - Estádio Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --card-glass: rgba(5, 20, 11, 0.88);
+            --border-glass: rgba(74, 222, 128, 0.28);
+            --accent: #4ade80;
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --ouro: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            color: var(--text-main);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            overflow-x: hidden;
+            position: relative;
+            background-image: 
+                linear-gradient(rgba(3, 15, 8, 0.65), rgba(3, 15, 8, 0.82)),
+                url('imagens/image.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 
+                0 30px 60px -15px rgba(0, 0, 0, 0.95),
+                0 0 0 1px var(--border-glass),
+                0 0 35px rgba(74, 222, 128, 0.08);
+            position: relative;
+            z-index: 2;
+        }
+
+        #fogos-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .particula-fogo {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: explodir-fogo 0.9s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+        }
+
+        @keyframes explodir-fogo {
+            0% { transform: translate(var(--x-ini), var(--y-ini)) scale(1.2); opacity: 1; }
+            100% { transform: translate(var(--x-fim), var(--y-fim)) scale(0.2); opacity: 0; }
+        }
+
+        #zoom-destaque-lider {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 15, 8, 0.94);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            animation: sumir-intro 0.5s ease-in-out 2.4s forwards;
+            pointer-events: none;
+        }
+
+        .intro-grupo {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .intro-foto-box {
+            width: 120px;
+            height: 120px;
+            border-radius: 28px;
+            border: 4px solid var(--ouro);
+            box-shadow: 0 0 50px rgba(251, 191, 36, 0.65);
+            overflow: hidden;
+            animation: zoom-lider-intro 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .intro-foto-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .intro-texto {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--ouro);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+        }
+
+        @keyframes zoom-lider-intro {
+            0% { transform: scale(0.1) translateY(100px); opacity: 0; }
+            35% { transform: scale(1.08) translateY(0); opacity: 1; }
+            75% { transform: scale(1) translateY(0); opacity: 1; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        @keyframes sumir-intro {
+            0% { opacity: 1; pointer-events: auto; }
+            100% { opacity: 0; visibility: hidden; pointer-events: none; }
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(74, 222, 128, 0.12);
+            border: 1px solid rgba(74, 222, 128, 0.35);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pulse-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: glow 1.2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .placar-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .jogador-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .jogador-card.lider-topo { 
+            border-color: rgba(251, 191, 36, 0.7); 
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+        }
+
+        .jogador-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .nome-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar-box {
+            position: relative;
+            width: 34px;
+            height: 34px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            overflow: visible;
+        }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 7px;
+        }
+
+        .coroa-lider {
+            position: absolute;
+            top: -9px;
+            right: -7px;
+            font-size: 0.8rem;
+            transform: rotate(15deg);
+        }
+
+        .lider-topo .avatar-box { color: var(--ouro); background: rgba(251, 191, 36, 0.18); }
+
+        .tag-nome {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .hint-click {
+            font-size: 0.55rem;
+            color: var(--text-sub);
+            display: block;
+        }
+
+        .pontos {
+            font-size: 1.4rem;
+            font-weight: 900;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .lider-topo .pontos { color: var(--ouro); }
+        .jogador-card:not(.lider-topo) .pontos { color: var(--text-sub); }
+
+        .historico-acertos {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, opacity 0.35s ease;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            opacity: 0;
+        }
+
+        .jogador-card.ativo .historico-acertos {
+            max-height: 350px;
+            padding-top: 8px;
+            margin-top: 8px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            opacity: 1;
+        }
+
+        .acerto-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+        }
+
+        .acerto-item span:first-child { color: var(--text-sub); }
+        .acerto-item span:last-child { color: #fff; font-weight: 700; }
+
+        .aposta-box {
+            background: rgba(74, 222, 128, 0.05);
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid rgba(74, 222, 128, 0.22);
+            font-size: 0.74rem;
+            color: var(--text-sub);
+            line-height: 1.35;
+            margin-bottom: 12px;
+        }
+
+        .aposta-box strong {
+            color: var(--accent);
+            display: block;
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .footer-info {
+            text-align: center;
+            font-size: 0.56rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="som-comemoracao" src="imagens/comemoracao.mp3" preload="auto"></audio>
+
+    <div id="zoom-destaque-lider">
+        <div class="intro-grupo" id="intro-grupo-alvo"></div>
+        <div class="intro-texto" id="intro-nome-alvo">LÍDERES DA COPA 👑</div>
+    </div>
+
+    <div class="container">
+        <div id="fogos-container"></div>
+        
+        <div class="header-top">
+            <div class="live-badge">
+                <span class="pulse-dot"></span>
+                <span>BOLÃO DA COPA • AO VIVO</span>
+            </div>
+        </div>
+
+        <h1>Placar do Pódio</h1>
+
+        <div class="placar-grid" id="grid-jogadores"></div>
+
+        <div class="aposta-box">
+            <strong>⚽ O que está em jogo</strong>
+            O primeiro lugar escolhe o proximo passeio do grupo
+        </div>
+
+        <div class="footer-info">
+            Toque no card para ver o histórico de apostas
+        </div>
+    </div>
+
+    <script>
+        const dadosAposta = [
+            { id: 1, nome: "Gustavo", pontos: 7, foto: "imagens/g1.png", acertos: ["México 2x1", "Austria 3x1", "(POR-x-COD) 1x1", "México 3x0", "Inglaterra 2x0", "Brasil 2x1", "México 2x0"] },
+            { id: 2, nome: "Estevão", pontos: 8, foto: "imagens/e1.png", acertos: ["Gana 1x0", "Brasil 3x0", "Egito 3x1", "França 3x0", "Croácia 2x1", "Argentina 3x1", "Noruega 2x1", "E.U.A 2x0"] },
+            { id: 3, nome: "Brianna", pontos: 8, foto: "imagens/b1.png", acertos: ["Japão 2x2", "Colômbia 3x1", "(URU-x-CPV) 2x2", "Suiça 2x1", "Holanda 3x1", "Noruega 2x1", "Portugal 2x1", "Suíça 2x0"] }
+        ];
+
+        function dispararFogos() {
+            const container = document.getElementById('fogos-container');
+            const cores = ['#fbbf24', '#4ade80', '#60a5fa', '#f87171', '#ffffff'];
+            
+            for (let i = 0; i < 40; i++) {
+                const particula = document.createElement('div');
+                particula.className = 'particula-fogo';
+                
+                const angulo = Math.random() * Math.PI * 2;
+                const distancia = 40 + Math.random() * 100;
+                const xFim = Math.cos(angulo) * distancia + 'px';
+                const yFim = Math.sin(angulo) * distancia + 'px';
+                
+                particula.style.setProperty('--x-ini', '50%');
+                particula.style.setProperty('--y-ini', '45%');
+                particula.style.setProperty('--x-fim', xFim);
+                particula.style.setProperty('--y-fim', yFim);
+                particula.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
+                
+                container.appendChild(particula);
+                setTimeout(() => particula.remove(), 900);
+            }
+        }
+
+        function configurarIntro(lideres) {
+            const grupoBox = document.getElementById('intro-grupo-alvo');
+            const textoBox = document.getElementById('intro-nome-alvo');
+            
+            grupoBox.innerHTML = "";
+            lideres.forEach(lider => {
+                const box = document.createElement('div');
+                box.className = 'intro-foto-box';
+                if (lider.foto) {
+                    box.innerHTML = `<img src="${lider.foto}" alt="${lider.nome}">`;
+                } else {
+                    box.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.2rem;color:var(--ouro)">👑</div>`;
+                }
+                grupoBox.appendChild(box);
+            });
+
+            if (lideres.length > 1) {
+                const nomes = lideres.map(l => l.nome).join(' & ');
+                textoBox.innerText = `👑 EMPATE NO TOPO: ${nomes} 👑`;
+            } else {
+                textoBox.innerText = `👑 ${lideres[0].nome} É O LÍDER! 👑`;
+            }
+            
+            // 🔊 DISPARAR O ÁUDIO NA COMEMORAÇÃO
+            const audio = document.getElementById('som-comemoracao');
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(e => console.log("Bloqueio de autoplay do navegador:", e));
+            }
+
+            setTimeout(dispararFogos, 600);
+            setTimeout(dispararFogos, 1200);
+        }
+
+        function renderizarPlacar() {
+            const jogadoresOrdenados = [...dadosAposta].sort((a, b) => b.pontos - a.pontos);
+            const maiorPontuacao = jogadoresOrdenados[0].pontos;
+            const lideres = jogadoresOrdenados.filter(j => j.pontos === maiorPontuacao);
+            
+            configurarIntro(lideres);
+
+            const grid = document.getElementById('grid-jogadores');
+            grid.innerHTML = "";
+
+            jogadoresOrdenados.forEach((jogador, index) => {
+                const posVisual = index + 1;
+                const ehLider = jogador.pontos === maiorPontuacao;
+                const iconeCoroa = ehLider ? `<span class="coroa-lider">👑</span>` : '';
+                const conteudoAvatar = jogador.foto ? `<img src="${jogador.foto}" alt="${jogador.nome}">${iconeCoroa}` : `${posVisual}º${iconeCoroa}`;
+
+                const card = document.createElement('div');
+                card.className = `jogador-card ${ehLider ? 'lider-topo' : ''}`;
+                card.onclick = () => alternarAcertos(card);
+
+                let acertosHtml = jogador.acertos.map((acerto, idx) => 
+                    `<div class="acerto-item"><span>Acertos ${idx + 1}:</span> <span>${acerto}</span></div>`
+                ).join('');
+
+                card.innerHTML = `
+                    <div class="jogador-topo">
+                        <div class="nome-info">
+                            <div class="avatar-box">${conteudoAvatar}</div>
+                            <div>
+                                <span class="tag-nome">${jogador.nome}</span>
+                                <span class="hint-click">Ver Acertos</span>
+                            </div>
+                        </div>
+                        <div class="pontos">${jogador.pontos} pts</div>
+                    </div>
+                    <div class="historico-acertos">
+                        ${acertosHtml}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function alternarAcertos(card) {
+            const cards = document.querySelectorAll('.jogador-card');
+            cards.forEach(c => {
+                if (c !== card) c.classList.remove('ativo');
+            });
+            card.classList.toggle('ativo');
+        }
+
+        renderizarPlacar();
+    </script>
+</body>
+</html>
